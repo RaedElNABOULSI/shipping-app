@@ -33,6 +33,10 @@ class UsersController extends Controller
         $user->password = Hash::make($request->password);
 
         $user->save();
+
+        return response()->json([
+             'message' => 'Registration Successful!',
+             ]);
     }
 
     /**
