@@ -1,0 +1,17 @@
+.userForm {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 250px;
+  background-color: rgba(135, 230, 163, 0.8);
+  text-align: center;
+  padding-top: 30px;
+  .buttons {
+    margin-top: 20px;
+  }
+  input {
+    width: 225px;
+  }
+}

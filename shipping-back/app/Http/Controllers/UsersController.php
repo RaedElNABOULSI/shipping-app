@@ -19,14 +19,13 @@ class UsersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a new user
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        // creates a user in the db
         $user = new User;
 
         $user->username = $request->username;
