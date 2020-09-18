@@ -10,13 +10,20 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+       /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+         'username', 'password',
     ];
 
     /**
@@ -36,4 +43,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+        public $timestamps = false;
+    public function rollApiKey(){ // generates random token for user
+        do{
+           $this->api_token =Str::random(60);
+        }while($this->where('api_token', $this->api_token)->exists());
+        $this->save();
+     }
 }
