@@ -14,11 +14,13 @@ class ShipmentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index(Request $request)
     { 
-        $shipments = Order::join('users', 'orders.user_id', '=', $id)
+        $userId = $request->query('id');
+        $shipments = Order::join('users', 'orders.user_id', '=', 'users.id')
                               ->join('shipments', 'orders.shipment_id', '=', 'shipments.id')
                               ->select('shipments.customer_name','shipments.customer_address','shipments.phone_number','shipments.waybill')
+                              ->where('orders.id', $userId)
                               ->get();
         return   $shipments ;
     }
@@ -42,9 +44,9 @@ class ShipmentsController extends Controller
         $shipment->save();
 
         $order = new Order;
-
+        $userId = User::where('username',$request->username)->value('id');
         $order->shipment_id = $shipment->id;
-        $order->user_id = $request->user_id; //get user id from local storage
+        $order->user_id = $userId; //get user id from above
 
         $order->save();
     }

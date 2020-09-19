@@ -1,0 +1,27 @@
+.portalLogic {
+  .tab {
+    text-align: center;
+    font-size: 1.5rem;
+    .view-shipments {
+      display: grid;
+      grid-template-columns: 30% 40%;
+      gap: 5%;
+      position: relative;
+      left: 10%;
+      top: 30%;
+      .customer-image {
+        height: 80%;
+      }
+      .customer-info {
+        // background-color: blue;
+        height: 80%;
+        display: grid;
+        grid-template-columns: auto auto;
+        padding-top: 10%;
+        // padding-right: 20%;
+        // line-height: 100px;
+        // padding-right: 500px;
+      }
+    }
+  }
+}

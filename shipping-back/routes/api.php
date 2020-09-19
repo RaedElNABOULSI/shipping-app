@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\User;
 
 /*
@@ -25,26 +27,15 @@ Route::resource('shipment', 'ShipmentsController');
 
 // -----Login -------------------------------
 Route::post('login', function (Request $request) {
-   if (count(User::where('username', $request->username)->get()) > 0) {
-      $user = User::where('username', $request->username)->first();
-      $auth = Hash::check($request->password, $user->password);
-
-      if ($user && $auth) {
-         $user->rollApiKey(); 
-         return response(array(
-            'currentUser' => $user,
-            'message' => 'Login Successful!',
+     $credentials = $request->only('username', 'password');
+     $username = $request->username;
+     $userId = User::where('username', $username)->value('id');
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+                  return response(array(
+                     'user_id'=>$userId,
+                     'username' =>$username,
+                     'message' => 'Login Successful!',
          ));
-      }
-
-      return [
-         'id' => 2,
-         'user' => $user,
-         'pass' => $auth
-      ];
-   }
-
-   return response(array(
-      'message' => 'Unauthorized, check your credentials.',
-   ), 401);
+        }
 });

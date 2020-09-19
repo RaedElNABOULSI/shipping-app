@@ -1,0 +1,22 @@
+.portalHeader {
+  background-color: rgb(113, 152, 190);
+  width: 100%;
+  height: 7vh;
+  position: relative;
+  h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 15%;
+  }
+  Button {
+    position: absolute;
+    right: 2%;
+    top: 15%;
+    color: white;
+    .logoutButton {
+      text-decoration: none;
+      color: white;
+    }
+  }
+}

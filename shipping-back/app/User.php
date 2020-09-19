@@ -44,7 +44,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
         public $timestamps = false;
-    public function rollApiKey(){ // generates random token for user
+        public function rollApiKey(){ // generates random token for user
         do{
            $this->api_token =Str::random(60);
         }while($this->where('api_token', $this->api_token)->exists());
