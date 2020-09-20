@@ -20,7 +20,7 @@ class ShipmentsController extends Controller
         $shipments = Order::join('users', 'orders.user_id', '=', 'users.id')
                               ->join('shipments', 'orders.shipment_id', '=', 'shipments.id')
                               ->select('shipments.customer_name','shipments.customer_address','shipments.phone_number','shipments.waybill')
-                              ->where('orders.id', $userId)
+                              ->where('orders.user_id', $userId)
                               ->get();
         return   $shipments ;
     }

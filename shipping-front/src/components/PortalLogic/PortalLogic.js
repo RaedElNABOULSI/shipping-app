@@ -8,6 +8,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function PortalHeader() {
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -16,6 +17,7 @@ export default function PortalHeader() {
   const [phoneNumber, setPhoneNumber] = React.useState([]);
   const [waybill, setWaybill] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
     const user_id = parseInt(localStorage.getItem("user_id"));
@@ -58,6 +60,7 @@ export default function PortalHeader() {
 
   const handleCreateShipment = (e) => {
     e.preventDefault();
+    setLoading(true);
     axios
       .post("http://127.0.0.1:8000/api/shipment", {
         customer_name: customerName,
@@ -67,10 +70,12 @@ export default function PortalHeader() {
         username: localStorage.getItem("username"),
       })
       .then((response) => {
+        setLoading(false);
         console.log(response);
         handleOpenDialog();
       })
       .catch((error) => {
+        setLoading(false);
         console.error(error);
       });
   };
@@ -129,6 +134,9 @@ export default function PortalHeader() {
               <Button variant="contained" color="primary" type="submit">
                 Create Shipment
               </Button>
+              <br />
+              <br />
+              {loading && <CircularProgress />}
             </form>
           </h2>
         </TabPanel>
