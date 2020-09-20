@@ -62,7 +62,6 @@ export default function UserForm() {
           password: password,
         })
         .then((response) => {
-          console.log(response.data);
           handleOpenDialog();
         })
         .catch((error) => {
@@ -78,9 +77,7 @@ export default function UserForm() {
         })
         .then((response) => {
           setLoading(false);
-          console.log("response is", response.data);
           // save  in local storage
-
           localStorage.setItem("user_id", response.data.user_id);
           localStorage.setItem("username", response.data.username);
           setRedirectToPortal(true);

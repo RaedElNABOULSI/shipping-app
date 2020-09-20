@@ -27,13 +27,10 @@ export default function PortalHeader() {
     axios
       .get(`http://127.0.0.1:8000/api/shipment?id=${user_id}`)
       .then(function (response) {
-        // handle success
-        console.log("customers are", response.data);
         setCustomers(response.data);
       })
       .catch(function (error) {
-        // handle error
-        console.log(error);
+        console.error(error);
       });
   }, []);
 
@@ -56,11 +53,9 @@ export default function PortalHeader() {
 
   // onchange
   const handleShipmentId = (e) => {
-    console.log(e.target.value);
     setShipmentId(e.target.value);
   };
   const handleCustomerName = (e) => {
-    console.log(e.target.value);
     setCustomerName(e.target.value);
   };
   const handleCustomerAddress = (e) => {
@@ -84,7 +79,6 @@ export default function PortalHeader() {
       })
       .then(function (response) {
         setOpenUpdateDialog(true);
-        console.log(response);
       })
       .catch(function (error) {
         console.error(error);
@@ -98,7 +92,6 @@ export default function PortalHeader() {
       .delete(`http://127.0.0.1:8000/api/shipment/${shipmentId}`)
       .then(function (response) {
         setLoading(false);
-        console.log(response);
         setOpenDeleteDialog(true);
       })
       .catch(function (error) {
@@ -120,7 +113,6 @@ export default function PortalHeader() {
       })
       .then((response) => {
         setLoading(false);
-        console.log(response);
         setOpenCreateDialog(true);
       })
       .catch((error) => {

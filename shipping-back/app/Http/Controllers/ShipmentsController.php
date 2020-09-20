@@ -46,7 +46,7 @@ class ShipmentsController extends Controller
         $order = new Order;
         $userId = User::where('username',$request->username)->value('id');
         $order->shipment_id = $shipment->id;
-        $order->user_id = $userId; //get user id from above
+        $order->user_id = $userId; 
 
         $order->save();
     }
@@ -87,12 +87,12 @@ class ShipmentsController extends Controller
      */
     public function destroy($shipment)
     {
-        $shipmentId = $shipment; // correct
+        $shipmentId = $shipment;
 
         $order = Order::where('shipment_id', $shipmentId);
         $order->delete();
 
-        $shipmentTable = Shipment::find($shipmentId); //correct
+        $shipmentTable = Shipment::find($shipmentId); 
         $shipmentTable->delete();
 
         return response()->json(['message'=>'shipment deleted successfully']);
