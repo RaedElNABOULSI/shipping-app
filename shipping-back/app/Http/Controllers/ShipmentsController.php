@@ -19,7 +19,7 @@ class ShipmentsController extends Controller
         $userId = $request->query('id');
         $shipments = Order::join('users', 'orders.user_id', '=', 'users.id')
                               ->join('shipments', 'orders.shipment_id', '=', 'shipments.id')
-                              ->select('shipments.customer_name','shipments.customer_address','shipments.phone_number','shipments.waybill')
+                              ->select('shipments.id','shipments.customer_name','shipments.customer_address','shipments.phone_number','shipments.waybill')
                               ->where('orders.user_id', $userId)
                               ->get();
         return   $shipments ;
@@ -85,12 +85,16 @@ class ShipmentsController extends Controller
      * @param  \App\Shipment  $shipment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($shipment)
     {
-        $shipment = Shipment::find($id);
-        $shipment->delete();
+        $shipmentId = $shipment; // correct
 
-        $order = Order::where('shipment_id', $id);
+        $order = Order::where('shipment_id', $shipmentId);
         $order->delete();
+
+        $shipmentTable = Shipment::find($shipmentId); //correct
+        $shipmentTable->delete();
+
+        return response()->json(['message'=>'shipment deleted successfully']);
     }
 }

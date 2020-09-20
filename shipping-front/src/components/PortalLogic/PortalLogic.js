@@ -11,14 +11,16 @@ import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function PortalHeader() {
-  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openCreateDialog, setOpenCreateDialog] = React.useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = React.useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [customerName, setCustomerName] = React.useState([]);
   const [customerAddress, setCustomerAddress] = React.useState([]);
   const [phoneNumber, setPhoneNumber] = React.useState([]);
   const [waybill, setWaybill] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [shipmentId, setShipmentId] = React.useState([]);
 
   useEffect(() => {
     const user_id = parseInt(localStorage.getItem("user_id"));
@@ -26,7 +28,7 @@ export default function PortalHeader() {
       .get(`http://127.0.0.1:8000/api/shipment?id=${user_id}`)
       .then(function (response) {
         // handle success
-        console.log(response);
+        console.log("customers are", response.data);
         setCustomers(response.data);
       })
       .catch(function (error) {
@@ -35,9 +37,14 @@ export default function PortalHeader() {
       });
   }, []);
 
+  // close dialogs
   const closeCreateDialog = () => {
-    setOpenDialog(false);
+    setOpenCreateDialog(false);
     clearState();
+  };
+
+  const closeDeleteDialog = () => {
+    setOpenDeleteDialog(false);
   };
 
   const closeUpdateDialog = () => {
@@ -47,7 +54,11 @@ export default function PortalHeader() {
     setWaybill([]);
   };
 
-  // start -- onchange
+  // onchange
+  const handleShipmentId = (e) => {
+    console.log(e.target.value);
+    setShipmentId(e.target.value);
+  };
   const handleCustomerName = (e) => {
     console.log(e.target.value);
     setCustomerName(e.target.value);
@@ -61,8 +72,8 @@ export default function PortalHeader() {
   const handleWaybill = (e) => {
     setWaybill(e.target.value);
   };
-  // end -- onchange
 
+  // on Submit
   const handleUpdateShipment = (e) => {
     e.preventDefault();
     axios
@@ -76,6 +87,22 @@ export default function PortalHeader() {
         console.log(response);
       })
       .catch(function (error) {
+        console.error(error);
+      });
+  };
+
+  const handleDeleteShipment = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    axios
+      .delete(`http://127.0.0.1:8000/api/shipment/${shipmentId}`)
+      .then(function (response) {
+        setLoading(false);
+        console.log(response);
+        setOpenDeleteDialog(true);
+      })
+      .catch(function (error) {
+        setLoading(false);
         console.error(error);
       });
   };
@@ -94,19 +121,21 @@ export default function PortalHeader() {
       .then((response) => {
         setLoading(false);
         console.log(response);
-        setOpenDialog(true);
+        setOpenCreateDialog(true);
       })
       .catch((error) => {
         setLoading(false);
         console.error(error);
       });
   };
+
   const clearState = () => {
     setCustomerName([]);
     setCustomerAddress([]);
     setPhoneNumber([]);
     setWaybill([]);
   };
+
   return (
     <div className="portalLogic">
       <Tabs className="tab">
@@ -116,6 +145,7 @@ export default function PortalHeader() {
           <Tab>View Shipments</Tab>
           <Tab>Delete Shipment</Tab>
         </TabList>
+
         {/* start - create shipment ------- */}
         <TabPanel>
           <h2>
@@ -261,13 +291,32 @@ export default function PortalHeader() {
 
         {/* start - delete shipment ------- */}
         <TabPanel>
-          <h2>Any content 4</h2>
+          <div className="delete-shipment">
+            <label>Choose a customer to delete shipment info:</label>
+            &nbsp;
+            <select onChange={(e) => handleShipmentId(e)}>
+              <option value="Choose">Choose customer</option>
+              {customers.map((item) => (
+                <option value={item.id}>{item.customer_name}</option>
+              ))}
+            </select>
+            <br />
+            <br />
+            <form onSubmit={(e) => handleDeleteShipment(e)}>
+              <Button variant="contained" color="primary" type="submit">
+                Delete Shipment
+              </Button>
+              <br />
+              <br />
+              {loading && <CircularProgress />}
+            </form>
+          </div>
         </TabPanel>
         {/* end - delete shipment ------- */}
       </Tabs>
       {/* create shipment dialog */}
       <Dialog
-        open={openDialog}
+        open={openCreateDialog}
         onClose={closeCreateDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -293,6 +342,22 @@ export default function PortalHeader() {
         </DialogTitle>
         <DialogActions>
           <Button onClick={closeUpdateDialog} color="primary" autoFocus>
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* delete shipment dialog  */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={closeDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Shipment deleted successfully !"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={closeDeleteDialog} color="primary" autoFocus>
             Ok
           </Button>
         </DialogActions>

@@ -27,15 +27,16 @@ Route::resource('shipment', 'ShipmentsController');
 
 // -----Login -------------------------------
 Route::post('login', function (Request $request) {
-     $credentials = $request->only('username', 'password');
-     $username = $request->username;
-     $userId = User::where('username', $username)->value('id');
-        if (Auth::attempt($credentials)) {
-            // Authentication passed...
-                  return response(array(
+    $credentials = $request->only('username', 'password');
+    $username = $request->username;
+    $userId = User::where('username', $username)->value('id');
+    if (!Auth::attempt($credentials)) {
+        return error;
+    }
+    // Authentication passed...
+    return response(array(
                      'user_id'=>$userId,
                      'username' =>$username,
                      'message' => 'Login Successful!',
-         ));
-        }
+    ));
 });

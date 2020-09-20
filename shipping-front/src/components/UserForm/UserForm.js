@@ -20,6 +20,7 @@ export default function UserForm() {
   const [loginClicked, setLoginClicked] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState(false);
 
   useEffect(() => {
     if (redirectToPortal) {
@@ -86,6 +87,8 @@ export default function UserForm() {
         })
         .catch((error) => {
           console.error(error);
+          setLoading(false);
+          setErrorMessage(true);
         });
     }
   };
@@ -104,6 +107,8 @@ export default function UserForm() {
         <br />
         <br />
         <TextField
+          autoComplete="new-password"
+          type="password"
           label="Password"
           required
           inputProps={{ minLength: 8 }}
@@ -132,6 +137,12 @@ export default function UserForm() {
             Login
           </Button>
         </div>
+        <br />
+        {errorMessage && (
+          <p style={{ color: "#B22222", fontWeight: "strong" }}>
+            Invalid username/password combination
+          </p>
+        )}
       </form>
       {/* dialog  */}
       <Dialog
