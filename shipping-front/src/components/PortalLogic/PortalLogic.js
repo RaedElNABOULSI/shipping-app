@@ -12,6 +12,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function PortalHeader() {
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openUpdateDialog, setOpenUpdateDialog] = React.useState(false);
   const [customerName, setCustomerName] = React.useState([]);
   const [customerAddress, setCustomerAddress] = React.useState([]);
   const [phoneNumber, setPhoneNumber] = React.useState([]);
@@ -34,17 +35,21 @@ export default function PortalHeader() {
       });
   }, []);
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
+  const closeCreateDialog = () => {
     setOpenDialog(false);
     clearState();
   };
 
+  const closeUpdateDialog = () => {
+    setOpenUpdateDialog(false);
+    setCustomerAddress([]);
+    setPhoneNumber([]);
+    setWaybill([]);
+  };
+
   // start -- onchange
   const handleCustomerName = (e) => {
+    console.log(e.target.value);
     setCustomerName(e.target.value);
   };
   const handleCustomerAddress = (e) => {
@@ -57,6 +62,23 @@ export default function PortalHeader() {
     setWaybill(e.target.value);
   };
   // end -- onchange
+
+  const handleUpdateShipment = (e) => {
+    e.preventDefault();
+    axios
+      .put(`http://127.0.0.1:8000/api/shipment/${customerName}`, {
+        customer_address: customerAddress,
+        phone_number: phoneNumber,
+        waybill: waybill,
+      })
+      .then(function (response) {
+        setOpenUpdateDialog(true);
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
 
   const handleCreateShipment = (e) => {
     e.preventDefault();
@@ -72,7 +94,7 @@ export default function PortalHeader() {
       .then((response) => {
         setLoading(false);
         console.log(response);
-        handleOpenDialog();
+        setOpenDialog(true);
       })
       .catch((error) => {
         setLoading(false);
@@ -94,7 +116,7 @@ export default function PortalHeader() {
           <Tab>View Shipments</Tab>
           <Tab>Delete Shipment</Tab>
         </TabList>
-
+        {/* start - create shipment ------- */}
         <TabPanel>
           <h2>
             <form autoComplete="off" onSubmit={(e) => handleCreateShipment(e)}>
@@ -140,9 +162,63 @@ export default function PortalHeader() {
             </form>
           </h2>
         </TabPanel>
+        {/* end - create shipment ------- */}
+
+        {/* start - update shipment ------- */}
         <TabPanel>
-          <h2>Any content 2</h2>
+          <div className="update-shipment">
+            <div className="customer-to-update">
+              <label for="cars">
+                Choose a customer to update shipment info:
+              </label>
+              &nbsp;
+              <select onChange={(e) => handleCustomerName(e)}>
+                <option value="Choose">Choose customer</option>
+                {customers.map((item) => (
+                  <option value={item.customer_name}>
+                    {item.customer_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <form autoComplete="off" onSubmit={(e) => handleUpdateShipment(e)}>
+              <TextField
+                label="Customer Address"
+                name="customerAddress"
+                onChange={(e) => handleCustomerAddress(e)}
+                value={customerAddress}
+                required
+              />
+              <br />
+              <TextField
+                label="Customer Phone Number"
+                name="phoneNumber"
+                onChange={(e) => handlePhoneNumber(e)}
+                value={phoneNumber}
+                required
+              />
+              <br />
+              <TextField
+                label="Waybill"
+                name="waybill"
+                onChange={(e) => handleWaybill(e)}
+                value={waybill}
+                required
+              />
+              <br />
+              <br />
+              <Button variant="contained" color="primary" type="submit">
+                Update Shipment
+              </Button>
+              <br />
+              <br />
+              {loading && <CircularProgress />}
+            </form>
+          </div>
         </TabPanel>
+        {/* end - update shipment ------- */}
+
+        {/* start - view shipment ------- */}
         <TabPanel>
           {customers.map((item) => (
             <div className="view-shipments">
@@ -181,13 +257,18 @@ export default function PortalHeader() {
             </div>
           ))}
         </TabPanel>
+        {/* end - update shipment ------- */}
+
+        {/* start - delete shipment ------- */}
         <TabPanel>
           <h2>Any content 4</h2>
         </TabPanel>
+        {/* end - delete shipment ------- */}
       </Tabs>
+      {/* create shipment dialog */}
       <Dialog
         open={openDialog}
-        onClose={handleCloseDialog}
+        onClose={closeCreateDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -195,7 +276,23 @@ export default function PortalHeader() {
           {"Shipment created successfully !"}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+          <Button onClick={closeCreateDialog} color="primary" autoFocus>
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* update shipment dialog  */}
+      <Dialog
+        open={openUpdateDialog}
+        onClose={closeUpdateDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Shipment Updated successfully !"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={closeUpdateDialog} color="primary" autoFocus>
             Ok
           </Button>
         </DialogActions>

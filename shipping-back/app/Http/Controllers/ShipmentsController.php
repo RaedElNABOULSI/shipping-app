@@ -58,16 +58,25 @@ class ShipmentsController extends Controller
      * @param  \App\Shipment  $shipment
      * @return \Illuminate\Http\Response
      */
-    public function update($id,Request $request)
+    public function update($shipment,Request $request)
     {
-        $shipment = Shipment::find($id);
+        $customerName = $shipment;
+        $shipmentId = Order::join('users', 'orders.user_id', '=', 'users.id')
+                                     ->join('shipments', 'orders.shipment_id', '=', 'shipments.id')
+                                     ->select('shipments.id','shipments.customer_address','shipments.phone_number','shipments.waybill')
+                                      ->where('shipments.customer_name',$customerName)
+                                      ->value('id');
 
-        $shipment->customer_name = $request->customer_name;
+        $shipment = Shipment::find($shipmentId);
+
+        $shipment->customer_name = $customerName;
         $shipment->customer_address = $request->customer_address;
         $shipment->phone_number = $request->phone_number;
         $shipment->waybill = $request->waybill;
 
         $shipment->save();
+
+        return response()->json(['message'=>'update successful']);
     }
 
     /**
