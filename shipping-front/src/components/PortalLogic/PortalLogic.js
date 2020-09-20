@@ -139,7 +139,7 @@ export default function PortalHeader() {
   return (
     <div className="portalLogic">
       <Tabs className="tab">
-        <TabList>
+        <TabList className="tab-list">
           <Tab>Create Shipment</Tab>
           <Tab>Update Shipment</Tab>
           <Tab>View Shipments</Tab>
@@ -257,32 +257,21 @@ export default function PortalHeader() {
                 className="customer-image"
               />
               <div className="customer-info">
-                <div className="key">
-                  <p>
-                    <strong>Customer name:</strong>{" "}
-                  </p>
-                  <br />
-                  <p>
-                    <strong>Customer address:</strong>{" "}
-                  </p>
-                  <br />
-                  <p>
-                    <strong>Phone number:</strong>{" "}
-                  </p>
-                  <br />
-                  <p>
-                    <strong>Waybill:</strong>{" "}
-                  </p>
-                </div>
-                <div className="value">
-                  <p>{item.customer_name}</p>
-                  <br />
-                  <p>{item.customer_address}</p>
-                  <br />
-                  <p> {item.phone_number}</p>
-                  <br />
-                  <p>{item.waybill}</p>
-                </div>
+                <p>
+                  <strong>Customer name: </strong> {item.customer_name}
+                </p>
+                <br />
+                <p>
+                  <strong>Customer address: </strong> {item.customer_address}
+                </p>
+                <br />
+                <p>
+                  <strong>Phone number: </strong> {item.phone_number}
+                </p>
+                <br />
+                <p>
+                  <strong>Waybill: </strong> {item.waybill}
+                </p>
               </div>
             </div>
           ))}

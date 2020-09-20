@@ -4,3 +4,187 @@
   margin: 0;
   font-family: "Times New Roman", Times, serif;
 }
+
+/* small devices (galaxy S9/S9+) */
+@media only screen and (max-width: 360px) and (max-width: 374px) {
+  .portalPage {
+    .portalLogic {
+      .tab {
+        .tab-list {
+          font-size: 0.5rem;
+        }
+        .delete-shipment {
+          font-size: 0.7rem;
+        }
+        .update-shipment {
+          .customer-to-update {
+            font-size: 0.8rem;
+          }
+        }
+        .view-shipments {
+          margin-top: 15px;
+          .customer-info {
+            font-size: 0.65rem;
+          }
+          .customer-image {
+            width: 150px;
+            position: relative;
+            right: 1rem;
+          }
+        }
+      }
+    }
+    .portalHeader {
+      h1 {
+        top: 25%;
+        width: 300px;
+        font-size: 1.2rem;
+      }
+      Button {
+        top: 15%;
+        font-size: 0.6rem;
+      }
+    }
+  }
+}
+
+/* small devices (iphone 6/7/8, X/XS ) */
+@media only screen and (min-width: 375px) and (max-width: 413px) {
+  .portalPage {
+    .portalLogic {
+      .tab {
+        .tab-list {
+          font-size: 0.6rem;
+        }
+        .delete-shipment {
+          font-size: 0.6rem;
+        }
+        .update-shipment {
+          .customer-to-update {
+            font-size: 0.8rem;
+          }
+        }
+        .view-shipments {
+          margin-top: 15px;
+          .customer-info {
+            font-size: 0.65rem;
+          }
+          .customer-image {
+            width: 150px;
+            position: relative;
+            right: 1rem;
+          }
+        }
+      }
+    }
+    .portalHeader {
+      h1 {
+        top: 25%;
+        width: 300px;
+        font-size: 1.2rem;
+      }
+      Button {
+        top: 15%;
+        font-size: 0.6rem;
+      }
+    }
+  }
+}
+
+/* small devices (iphone 6/7/8 plus) */
+@media only screen and (min-width: 414px) and (max-width: 767px) {
+  .portalPage {
+    .portalLogic {
+      .tab {
+        .tab-list {
+          font-size: 0.7rem;
+        }
+        .delete-shipment {
+          font-size: 0.9rem;
+        }
+        .update-shipment {
+          .customer-to-update {
+            font-size: 0.9rem;
+          }
+        }
+        .view-shipments {
+          margin-top: 15px;
+          .customer-info {
+            font-size: 0.65rem;
+          }
+          .customer-image {
+            width: 150px;
+            position: relative;
+            right: 1rem;
+          }
+        }
+      }
+    }
+    .portalHeader {
+      h1 {
+        top: 25%;
+        width: 300px;
+        font-size: 1.2rem;
+      }
+      Button {
+        top: 15%;
+        font-size: 0.7rem;
+      }
+    }
+  }
+}
+
+/* Large devices (ipad) */
+@media only screen and (min-width: 768px) and (max-width: 799px) {
+  .portalPage {
+    .portalLogic {
+      .tab {
+        .view-shipments {
+          .customer-info {
+            margin-top: 15%;
+          }
+          .customer-image {
+            position: relative;
+            right: 60%;
+          }
+        }
+      }
+    }
+    .portalHeader {
+      h1 {
+        top: 35%;
+        width: 400px;
+      }
+      Button {
+        top: 35%;
+      }
+    }
+  }
+}
+
+/* Large devices (laptop) */
+@media only screen and (min-width: 800px) and (max-width: 1024px) {
+  .portalPage {
+    .portalLogic {
+      .tab {
+        .view-shipments {
+          .customer-info {
+            margin-top: 15%;
+          }
+          .customer-image {
+            position: relative;
+            right: 60%;
+          }
+        }
+      }
+    }
+    .portalHeader {
+      h1 {
+        top: 25%;
+      }
+      Button {
+        top: 25%;
+      }
+    }
+  }
+}
